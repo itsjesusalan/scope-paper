@@ -38,52 +38,34 @@ BBBP    &  8   & 0.778 & 0.711 & 0.739 & 0.438 \\
 
 The three benchmarks differ substantially in class balance, and the aggregate
 metrics of Table~\ref{tab:scope_results} are consequently not comparable across
-datasets without reference to the underlying operating point. Table~\ref{tab:scope_cm}
-therefore reports the confusion matrix of each configuration together with the
-sensitivity, specificity and precision it induces on the 70\% test partition.
-Two observations follow. First, the decision rule is not biased towards the
-majority class: on ClinTox, where the positive (toxic) class represents only
-8.2\% of the test instances, sensitivity reaches 0.901, so 64 of the 71 toxic
-compounds are recovered. Second, the cost of that sensitivity is a precision of
-0.398, since the same rule produces 97 false positives among 795 negatives.
+datasets without reference to the class distribution of each test partition, in
+which positive instances account for 8.2\% (ClinTox), 25.2\% (BBBP) and 54.2\%
+(BACE) of the examples. On ClinTox the decision rule is not biased towards the
+majority class: sensitivity reaches 0.901 and specificity 0.878, so 64 of the 71
+toxic compounds are recovered. Because the positive class is so small, however,
+the 97 negative instances misclassified by that same rule outnumber the entire
+positive class.
 
-\begin{table}[!htb]
-\caption{Operating point of the three best test-set configurations of
-Table~\ref{tab:scope_results} on the 70\% test partition. $n$: test-set size;
-Pos.: proportion of positive instances; TN, FP, FN, TP: confusion-matrix
-entries; Sens.: sensitivity (recall of the positive class); Spec.:
-specificity; Prec.: precision; Acc.: overall accuracy.}\label{tab:scope_cm}
-\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccccccccccc@{}}
-\toprule
-Dataset & $k$ & $n$ & Pos. & TN & FP & FN & TP & Sens. & Spec. & Prec. & Acc. \\
-\midrule
-ClinTox & 10 &  866 & 0.082 & 698 &  97 &   7 &  64 & 0.901 & 0.878 & 0.398 & 0.880 \\
-BBBP    &  8 & 1183 & 0.252 & 688 & 197 &  89 & 209 & 0.701 & 0.777 & 0.515 & 0.758 \\
-BACE    &  3 & 1048 & 0.542 & 274 & 206 & 234 & 334 & 0.588 & 0.571 & 0.619 & 0.580 \\
-\botrule
-\end{tabular*}
-\end{table}
-
-This asymmetry accounts for the divergence between the threshold-independent and
+This imbalance accounts for the divergence between the threshold-independent and
 the threshold-dependent metrics on ClinTox. The AUC-ROC (0.933) and the balanced
 accuracy (0.890) average the two class-conditional rates and are therefore
 dominated by the high sensitivity and specificity; the macro F1 (0.741) and the
-MCC (0.550), in contrast, penalise the low precision of the minority class.
-The discrepancy is thus a property of the operating point under an 8.2\%
-positive rate rather than an indication of an unreliable ranking, a pattern
-shared by low-data approaches on imbalanced molecular
-benchmarks~\cite{zhang2024molfescue,wu2018moleculenet}. It also follows that the
-AUC-driven choice of $k$ does not dominate every metric across the ClinTox
-sweep: the best balanced accuracy (0.903) is obtained at $k=8$, and the best
-macro F1 (0.756) and MCC (0.570) at $k=15$, whereas the AUC-ROC at $k=10$ and
-$k=15$ is practically tied (0.933 against 0.933). Furthermore, the size selected
-on the search split is $k=5$ (CV balanced accuracy 0.946), for which the test
-AUC-ROC and MCC fall to 0.884 and 0.498, respectively.
-Table~\ref{tab:scope_results} should therefore be read as an upper reference for
-ClinTox, whereas for BACE ($k=3$) and BBBP ($k=8$) the best test size coincides
-with the best search size among the fixed sizes (Appendix~\ref{app:sweep}).
+MCC (0.550), in contrast, incorporate the absolute number of misclassified
+negatives and are consequently depressed by it. The discrepancy is thus a
+property of the class distribution under an 8.2\% positive rate rather than an
+indication of an unreliable ranking, a pattern shared by low-data approaches on
+imbalanced molecular benchmarks~\cite{zhang2024molfescue,wu2018moleculenet}. It
+also follows that the AUC-driven choice of $k$ does not dominate every metric
+across the ClinTox sweep: the best balanced accuracy (0.903) is obtained at
+$k=8$, and the best macro F1 (0.756) and MCC (0.570) at $k=15$, whereas the
+AUC-ROC at $k=10$ and $k=15$ is practically tied (0.933 against 0.933).
+Furthermore, the size selected on the search split is $k=5$ (CV balanced
+accuracy 0.946), for which the test AUC-ROC and MCC fall to 0.884 and 0.498,
+respectively. Table~\ref{tab:scope_results} should therefore be read as an upper
+reference for ClinTox, whereas for BACE ($k=3$) and BBBP ($k=8$) the best test
+size coincides with the best search size among the fixed sizes.
 
-The operating point also clarifies the two weaker benchmarks. On BACE the
+The class distribution also clarifies the two weaker benchmarks. On BACE the
 positive class accounts for 54.2\% of the test instances, so the task is close to
 balanced and the baseline of an uninformed classifier is correspondingly high;
 an AUC-ROC of 0.585 with an MCC of 0.158 and a sensitivity of 0.588 therefore
@@ -158,9 +140,9 @@ that a support-set size selected per dataset is preferable to mixing sizes
 within a single run, and that the penalty for mixing is largest where
 performance depends most sharply on $k$.
 
-Finally, the configurations selected by the search at the best test support-set
-size of each dataset are listed in Appendix~\ref{app:sweep}. In every dataset
-and setting of the sweep the selected \texttt{keep\_similar} is \texttt{True}.
+Finally, the configurations selected by the search differ systematically across
+tasks. In every dataset and setting of the sweep the selected
+\texttt{keep\_similar} is \texttt{True}.
 For the three configurations of Table~\ref{tab:scope_results} the
 compressor--metric subsets vary across tasks: on BACE ($k=3$) the search retains
 NCD alone with compressors \{zlib, gzip\}; on BBBP ($k=8$) the full compressor
