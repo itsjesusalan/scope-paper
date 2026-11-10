@@ -2,11 +2,15 @@
 
 \subsection{SCoPE Classification Performance}\label{subsec:perf}
 
-Table~\ref{tab:scope_results} summarises the test performance of SCoPE on the
-three benchmarks under the 70/30 test/search protocol. For each dataset, $k$
-denotes the support-set size with the highest test AUC-ROC. The table also
-reports the \texttt{variable} setting, in which the support size is sampled
-uniformly from $\{3,\dots,20\}$ for every query.
+Table~\ref{tab:scope_results} reports the test performance of SCoPE on the three
+benchmarks under the 70/30 test/search protocol. For each dataset two settings
+are listed: the fixed support-set size $k$ attaining the highest test AUC-ROC,
+and the \texttt{variable} setting, in which the support size is resampled
+uniformly from $\{3,\dots,20\}$ for every query. Across the three best
+configurations the mean test AUC-ROC amounts to 0.765. This mean, however,
+conceals a spread of 0.349 between the strongest (ClinTox, 0.933) and the
+weakest (BACE, 0.585) benchmark; the origin of that spread, rather than the
+aggregate, is the subject of the present section.
 
 \begin{table}[!htb]
 \caption{SCoPE classification performance under the 70\% test /
@@ -32,66 +36,140 @@ BBBP    &  8   & 0.778 & 0.711 & 0.739 & 0.438 \\
 \end{tabular}
 \end{table}
 
-On ClinTox, SCoPE attains an AUC-ROC of 0.933 at $k=10$ and an accuracy of
-88.0\% despite the severe class imbalance ($\approx$8\% positive). The macro
-F1 (0.741) and MCC (0.550) are lower than the AUC-ROC and the balanced
-accuracy (0.890), which reflects the inherent difficulty of detecting rare
-toxic compounds from a small support set, a challenge shared by low-data
-approaches \cite{zhang2024molfescue,wu2018moleculenet}. Since AUC-ROC is the headline metric, $k=10$ is
-reported in Table~\ref{tab:scope_results}; however, this choice does not
-dominate every metric across the ClinTox sweep: the best balanced accuracy
-(0.903) is obtained at $k=8$, the best macro F1 (0.756) and MCC (0.570) at
-$k=15$, and the AUC-ROC at $k=10$ and $k=15$ is practically tied (0.933).
-Furthermore, the size selected on the search split for ClinTox is $k=5$
-(CV balanced accuracy 0.946), for which the test AUC-ROC and MCC are 0.884 and
-0.498, respectively. Table~\ref{tab:scope_results} should therefore be read as
-an upper reference for ClinTox, whereas for BACE ($k=3$) and BBBP ($k=8$) the
-best test size coincides with the best search size among the fixed sizes
-(Appendix~\ref{app:sweep}).
+The three benchmarks differ substantially in class balance, and the aggregate
+metrics of Table~\ref{tab:scope_results} are consequently not comparable across
+datasets without reference to the underlying operating point. Table~\ref{tab:scope_cm}
+therefore reports the confusion matrix of each configuration together with the
+sensitivity, specificity and precision it induces on the 70\% test partition.
+Two observations follow. First, the decision rule is not biased towards the
+majority class: on ClinTox, where the positive (toxic) class represents only
+8.2\% of the test instances, sensitivity reaches 0.901, so 64 of the 71 toxic
+compounds are recovered. Second, the cost of that sensitivity is a precision of
+0.398, since the same rule produces 97 false positives among 795 negatives.
 
-In all three datasets, the \texttt{variable} setting attains a lower test
-AUC-ROC than the best fixed size (0.912 vs.\ 0.933 on ClinTox, 0.533 vs.\ 0.585
-on BACE, and 0.749 vs.\ 0.778 on BBBP). On ClinTox its balanced accuracy (0.842)
-and MCC (0.466) are also lower than those of the best fixed size. On BBBP,
-however, its macro F1 (0.719) is higher than that of the $k=8$ configuration
-(0.711) and its MCC (0.454) is within 0.02 of the best MCC of the sweep
-(0.474 at $k=15$). These results indicate that a support-set size selected per
-dataset is preferable to mixing sizes within a single run.
+\begin{table}[!htb]
+\caption{Operating point of the three best test-set configurations of
+Table~\ref{tab:scope_results} on the 70\% test partition. $n$: test-set size;
+Pos.: proportion of positive instances; TN, FP, FN, TP: confusion-matrix
+entries; Sens.: sensitivity (recall of the positive class); Spec.:
+specificity; Prec.: precision; Acc.: overall accuracy.}\label{tab:scope_cm}
+\begin{tabular*}{\textwidth}{@{\extracolsep\fill}lccccccccccc@{}}
+\toprule
+Dataset & $k$ & $n$ & Pos. & TN & FP & FN & TP & Sens. & Spec. & Prec. & Acc. \\
+\midrule
+ClinTox & 10 &  866 & 0.082 & 698 &  97 &   7 &  64 & 0.901 & 0.878 & 0.398 & 0.880 \\
+BBBP    &  8 & 1183 & 0.252 & 688 & 197 &  89 & 209 & 0.701 & 0.777 & 0.515 & 0.758 \\
+BACE    &  3 & 1048 & 0.542 & 274 & 206 & 234 & 334 & 0.588 & 0.571 & 0.619 & 0.580 \\
+\botrule
+\end{tabular*}
+\end{table}
 
-On BACE, the AUC-ROC of 0.585 (MCC 0.158) is close to chance and lies below the
-values reported for the baselines in Section~\ref{subsec:compare}
-(Table~\ref{tab:context}), although the protocols differ; this indicates that
-the compression signal alone under random 70/30 splitting is insufficient for
-this binding-affinity task. On BBBP, the AUC-ROC of 0.778 (MCC 0.438) indicates
-that SMILES string compression encodes a partial signal for blood-brain barrier
-penetration, a property driven by molecular size, polarity, and hydrogen-bonding
-capacity, all of which manifest in SMILES character patterns \cite{martins2012bayesian}.
-Across the three best test-set configurations of
-Table~\ref{tab:scope_results}, the mean test AUC-ROC amounts to 0.765. These
-results support the hypothesis that raw SMILES strings, despite their
-non-unique graph encoding \cite{li2022novel,bennett1998information}, contain sufficient structural
-redundancy for compression-based dissimilarity to recover useful similarity
-rankings, consistent with the theoretical upper bound of NCD on the true NID
-\cite{cilibrasi2005clustering}; nevertheless, the gap relative to the baselines underscores the
-limits of the raw-string compression signal on structurally heterogeneous
-tasks.
+This asymmetry accounts for the divergence between the threshold-independent and
+the threshold-dependent metrics on ClinTox. The AUC-ROC (0.933) and the balanced
+accuracy (0.890) average the two class-conditional rates and are therefore
+dominated by the high sensitivity and specificity; the macro F1 (0.741) and the
+MCC (0.550), in contrast, penalise the low precision of the minority class.
+The discrepancy is thus a property of the operating point under an 8.2\%
+positive rate rather than an indication of an unreliable ranking, a pattern
+shared by low-data approaches on imbalanced molecular
+benchmarks~\cite{zhang2024molfescue,wu2018moleculenet}. It also follows that the
+AUC-driven choice of $k$ does not dominate every metric across the ClinTox
+sweep: the best balanced accuracy (0.903) is obtained at $k=8$, and the best
+macro F1 (0.756) and MCC (0.570) at $k=15$, whereas the AUC-ROC at $k=10$ and
+$k=15$ is practically tied (0.933 against 0.933). Furthermore, the size selected
+on the search split is $k=5$ (CV balanced accuracy 0.946), for which the test
+AUC-ROC and MCC fall to 0.884 and 0.498, respectively.
+Table~\ref{tab:scope_results} should therefore be read as an upper reference for
+ClinTox, whereas for BACE ($k=3$) and BBBP ($k=8$) the best test size coincides
+with the best search size among the fixed sizes (Appendix~\ref{app:sweep}).
 
-The configurations selected by the search at the best test support-set size of
-each dataset are listed in Appendix~\ref{app:sweep}. In every dataset and
-setting of the sweep, the selected \texttt{keep\_similar} is \texttt{True}. For
-the three configurations of Table~\ref{tab:scope_results}, the
-compressor--metric subsets vary across tasks: on BACE ($k=3$) the search
-retains NCD alone with compressors \{zlib, gzip\}; on BBBP ($k=8$) the full
-compressor family \{bz2, zlib, gzip\} is combined with \{CDM, CLM\}; and on
-ClinTox ($k=10$), \{bz2, gzip\} with \{CDM, CLM\}. None of these three
-configurations relies on a single compressor or activates all three metrics
-simultaneously. The two tasks with the strongest test signal (BBBP and ClinTox)
-both select CDM and CLM, whereas the weaker BACE signal is captured by NCD
-alone. The compressor--metric subsets and \texttt{keep\_similar} are the
-\texttt{arg\,max} of the search objective (balanced accuracy, 30\% search
+The operating point also clarifies the two weaker benchmarks. On BACE the
+positive class accounts for 54.2\% of the test instances, so the task is close to
+balanced and the baseline of an uninformed classifier is correspondingly high;
+an AUC-ROC of 0.585 with an MCC of 0.158 and a sensitivity of 0.588 therefore
+indicates a weak but non-null signal rather than a systematic error, and lies
+below the values reported for the baselines in
+Section~\ref{subsec:compare} (Table~\ref{tab:context}), notwithstanding the
+protocol differences. The compression signal alone, under random 70/30
+splitting, is thus insufficient for this binding-affinity task. On BBBP, by
+contrast, an AUC-ROC of 0.778 combined with a specificity of 0.777 and a
+sensitivity of 0.701 indicates that SMILES string compression encodes a partial
+signal for blood-brain barrier penetration, a property governed by molecular
+size, polarity and hydrogen-bonding capacity, all of which manifest in SMILES
+character patterns~\cite{martins2012bayesian}.
+
+Figure~\ref{fig:classification_results} shows the evolution of the four test
+metrics across the support-set sizes of the sweep. The three datasets exhibit
+qualitatively different profiles. On ClinTox the AUC-ROC rises steeply between
+$k=3$ and $k=8$ and then plateaus, varying by less than 0.003 over
+$k\in\{8,10,15\}$ before degrading at $k=20$; the plateau indicates that the
+class signature stabilises once the support set exceeds a small threshold. On
+BBBP the metrics fluctuate within a narrow band (test AUC-ROC between 0.684 and
+0.779) without a monotone trend, whereas on BACE they decay towards chance as
+$k$ grows, with the MCC falling from 0.158 at $k=3$ to $-0.006$ at $k=17$.
+Consequently, enlarging the support set is beneficial only where the
+compression-based dissimilarity separates the classes in the first place; where
+it does not, additional support members dilute the centroid rather than refine
+it.
+
+% Per-dataset test metrics across support-set sizes.
+% Expected files: images/classification_results/{bace,bbbp,clintox}_evaluation.png
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth, keepaspectratio]{images/classification_results/bace_evaluation.png}
+        \caption{BACE dataset}
+        \label{fig:eval_bace}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth, keepaspectratio]{images/classification_results/bbbp_evaluation.png}
+        \caption{BBBP dataset}
+        \label{fig:eval_bbbp}
+    \end{subfigure}
+
+    \vspace{1em}
+    \begin{subfigure}[b]{0.55\textwidth}
+        \centering
+        \includegraphics[width=\linewidth, keepaspectratio]{images/classification_results/clintox_evaluation.png}
+        \caption{ClinTox dataset}
+        \label{fig:eval_clintox}
+    \end{subfigure}
+
+    \caption{Test-split performance across support-set sizes
+    $k\in\{3,5,8,10,15,17,20\}$ for the three benchmarks. Each panel reports
+    \texttt{auc\_roc}, \texttt{f1\_score}, \texttt{balanced\_accuracy} and
+    \texttt{mcc} of the configuration selected on the search split at that
+    support-set size.}
+    \label{fig:classification_results}
+\end{figure}
+
+The \texttt{variable} setting attains a lower test AUC-ROC than the best fixed
+size on all three datasets (0.912 against 0.933 on ClinTox, 0.533 against 0.585
+on BACE, and 0.749 against 0.778 on BBBP). On ClinTox its balanced accuracy
+(0.842) and MCC (0.466) are likewise lower. On BBBP, however, its macro F1
+(0.719) exceeds that of the $k=8$ configuration (0.711) and its MCC (0.454) lies
+within 0.02 of the best value of the sweep (0.474 at $k=15$), which is
+consistent with the flat profile of that dataset in
+Figure~\ref{fig:classification_results}. Taken together, these results indicate
+that a support-set size selected per dataset is preferable to mixing sizes
+within a single run, and that the penalty for mixing is largest where
+performance depends most sharply on $k$.
+
+Finally, the configurations selected by the search at the best test support-set
+size of each dataset are listed in Appendix~\ref{app:sweep}. In every dataset
+and setting of the sweep the selected \texttt{keep\_similar} is \texttt{True}.
+For the three configurations of Table~\ref{tab:scope_results} the
+compressor--metric subsets vary across tasks: on BACE ($k=3$) the search retains
+NCD alone with compressors \{zlib, gzip\}; on BBBP ($k=8$) the full compressor
+family \{bz2, zlib, gzip\} is combined with \{CDM, CLM\}; and on ClinTox
+($k=10$), \{bz2, gzip\} with \{CDM, CLM\}. None of these configurations relies on
+a single compressor or activates all three metrics simultaneously. Notably, the
+two tasks with the strongest test signal (BBBP and ClinTox) both select CDM and
+CLM, whereas the weaker BACE signal is captured by NCD alone. These subsets are
+the \texttt{arg\,max} of the search objective (balanced accuracy, 30\% search
 split) over the 98 configurations enumerated per support-set size; only the
 choice of $k$ reported in Table~\ref{tab:scope_results} is made on the test
 split.
-
-% [FIGURE PLACEHOLDER: classification results (BACE, BBBP, ClinTox) -- add here
-% and cite it in the text once the images are available]
