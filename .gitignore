@@ -29,8 +29,9 @@
 *.thm
 *.xdy
 
-# PDF generado (descomenta si no quieres versionarlo)
-# *.pdf
+# PDF generado (no se versiona). Las figuras en PDF sí se versionan.
+*.pdf
+!images/**/*.pdf
 
 # Carpetas de salida de compilación
 build/
