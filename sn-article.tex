@@ -1,0 +1,98 @@
+%% SCoPE — Full JCR Article (complete, definitive version)
+%% Template: Springer Nature sn-mathphys-num v3.1
+
+\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}
+
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage[title]{appendix}
+\usepackage{xcolor}
+\usepackage{textcomp}
+\usepackage{manyfoot}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{listings}
+
+% desplazamieno
+\makeatletter
+\@twosidefalse
+\@mparswitchfalse
+\evensidemargin=\oddsidemargin
+\makeatother
+
+%IDK
+\usepackage{showframe}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage[section]{placeins}
+% IDK
+
+\theoremstyle{thmstyleone}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{thmstyletwo}
+\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+\theoremstyle{thmstylethree}
+\newtheorem{definition}{Definition}
+
+\raggedbottom
+
+%% Relacionado con cambios al texto y texto nuevo
+%% Revision marking macros: \revadd{...} (new text, red) and
+%% \revmod{...} (rewritten text, blue).
+\newcommand{\revadd}[1]{\textcolor{red}{#1}}
+\newcommand{\revmod}[1]{\textcolor{blue}{#1}}
+
+
+\begin{document}
+
+
+%% ─────────────────────────────────────────────────────────────────
+%%  TITLE
+%% ─────────────────────────────────────────────────────────────────
+\title[SCoPE: Compression-Based Molecular Classification]{%
+SCoPE: A Training-Free Compression-Based Ensemble Prediction Engine for Molecular Property Classification via Information-Theoretic Dissimilarity Matrices}
+
+\author[1]{\fnm{Jesús Alan} \sur{Hernández-Galván}}
+\author[1]{\fnm{Hugo} \sur{Varela-Rodríguez}}
+\author*[1]{\fnm{Abimael} \sur{Guzman-Pando}}
+\email{aguzmanp@uach.mx}
+
+
+\affil[1]{%
+  \orgdiv{Facultad de Medicina y Ciencias Biomédicas},
+  \orgname{Universidad Autónoma de Chihuahua},
+  \orgaddress{\street{Campus II}, \city{Chihuahua},
+  \postcode{31125}, \state{Chihuahua}, \country{Mexico}}}
+
+%% ─────────────────────────────────────────────────────────────────
+%%  ABSTRACT
+%% ─────────────────────────────────────────────────────────────────
+\abstract{%
+The prediction of molecular properties constitutes a central problem in computational drug discovery.
+In fact, dominant deep learning approaches are still fundamentally constrained by their dependence on large labeled datasets and substantial computational resources.
+In this sense, we present SCoPE (Support Compression-based Prediction Engine), a training-free classification framework that leverages information-theoretic dissimilarity metrics, specifically the Normalized Compression Distance (NCD), the Compression-based Dissimilarity Measure (CDM), and the Compression Length Measure (CLM).
+Unlike other frameworks, its few-shot molecular classification is executed from raw SMILES strings without gradient-based optimization, molecular featurization, or auxiliary task pre-training.
+\revmod{SCoPE constructs a pairwise dissimilarity matrix over a support set and a query instance and derives, for each combination of lossless compressor (gzip, zlib, bz2) and dissimilarity metric, a combined distance given by the product of the Euclidean and cosine distances; the final class assignment is resolved by majority voting over the resulting base classifiers, one per compressor--metric channel.}
+\revmod{Evaluated} on three MoleculeNet benchmarks (ClinTox, BACE, and BBBP), under a 70\% test and 30\% search protocol, SCoPE attains a test AUC-ROC of \revmod{0.933 on ClinTox (support-set size $k=10$), 0.778 on BBBP ($k=8$), and 0.585 on BACE ($k=3$), each the best test-set configuration observed per dataset}, all \revmod{without} any gradient-based parameter optimisation.
+Ablation studies also confirm \revmod{the individual contributions of the multi-compressor ensemble and of the self-similarity feature configuration}.
+Therefore, by performing a rigorous comparative analysis against ten representative methods from the literature on compression-based classification and molecular property predictions, we were able to contextualize the performance of the proposed framework, considering the explicit protocol differences that prevent a direct numerical comparison across the evaluation paradigms considered.}
+
+\keywords{Normalized Compression Distance; Compression-based Dissimilarity
+Measure; few-shot molecular classification; training-free learning.}
+
+\maketitle
+
+\input{sections/01_introduction}
+\input{sections/02_methodology}
+\input{sections/03_results_and_discussion}
+
+\bibliography{sn-bibliography}
+
+\end{document}

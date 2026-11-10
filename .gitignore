@@ -1,0 +1,50 @@
+# Archivos auxiliares de compilación
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.nav
+*.snm
+*.vrb
+*.idx
+*.ind
+*.ilg
+*.glo
+*.gls
+*.glg
+*.acn
+*.acr
+*.alg
+*.loa
+*.thm
+*.xdy
+
+# PDF generado (descomenta si no quieres versionarlo)
+# *.pdf
+
+# Carpetas de salida de compilación
+build/
+out/
+auxiliary/
+
+# Archivos de editores
+*~
+*.swp
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Cachés de herramientas
+_minted-*/
+.latexmk

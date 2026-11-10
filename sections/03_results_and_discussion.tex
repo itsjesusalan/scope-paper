@@ -1,0 +1,97 @@
+\section{Results and Discussion}\label{sec:results}
+
+\subsection{SCoPE Classification Performance}\label{subsec:perf}
+
+Table~\ref{tab:scope_results} summarises the test performance of SCoPE on the
+three benchmarks under the 70/30 test/search protocol. For each dataset, $k$
+denotes the support-set size with the highest test AUC-ROC. The table also
+reports the \texttt{variable} setting, in which the support size is sampled
+uniformly from $\{3,\dots,20\}$ for every query.
+
+\begin{table}[!htb]
+\caption{SCoPE classification performance under the 70\% test /
+30\% search protocol (random partition, no scaffold stratification).
+$k$ is the support-set size of the best test-set configuration
+observed per dataset (highest test AUC-ROC); Var.: \texttt{variable} support-set
+size ($k\in\{3,\dots,20\}$ sampled per query). AUC-ROC: area under the
+ROC curve; F1: macro F1-score; Bal.-Acc.: balanced accuracy; MCC:
+Matthews correlation coefficient.}\label{tab:scope_results}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Dataset & $k$ & AUC-ROC & F1 & Bal.-Acc. & MCC \\
+\midrule
+ClinTox & 10   & 0.933 & 0.741 & 0.890 & 0.550 \\
+        & Var. & 0.912 & 0.695 & 0.842 & 0.466 \\
+\midrule
+BACE    &  3   & 0.585 & 0.579 & 0.579 & 0.158 \\
+        & Var. & 0.533 & 0.532 & 0.533 & 0.065 \\
+\midrule
+BBBP    &  8   & 0.778 & 0.711 & 0.739 & 0.438 \\
+        & Var. & 0.749 & 0.719 & 0.749 & 0.454 \\
+\botrule
+\end{tabular}
+\end{table}
+
+On ClinTox, SCoPE attains an AUC-ROC of 0.933 at $k=10$ and an accuracy of
+88.0\% despite the severe class imbalance ($\approx$8\% positive). The macro
+F1 (0.741) and MCC (0.550) are lower than the AUC-ROC and the balanced
+accuracy (0.890), which reflects the inherent difficulty of detecting rare
+toxic compounds from a small support set, a challenge shared by low-data
+approaches \cite{bib21,bib5}. Since AUC-ROC is the headline metric, $k=10$ is
+reported in Table~\ref{tab:scope_results}; however, this choice does not
+dominate every metric across the ClinTox sweep: the best balanced accuracy
+(0.903) is obtained at $k=8$, the best macro F1 (0.756) and MCC (0.570) at
+$k=15$, and the AUC-ROC at $k=10$ and $k=15$ is practically tied (0.933).
+Furthermore, the size selected on the search split for ClinTox is $k=5$
+(CV balanced accuracy 0.946), for which the test AUC-ROC and MCC are 0.884 and
+0.498, respectively. Table~\ref{tab:scope_results} should therefore be read as
+an upper reference for ClinTox, whereas for BACE ($k=3$) and BBBP ($k=8$) the
+best test size coincides with the best search size among the fixed sizes
+(Appendix~\ref{app:sweep}).
+
+In all three datasets, the \texttt{variable} setting attains a lower test
+AUC-ROC than the best fixed size (0.912 vs.\ 0.933 on ClinTox, 0.533 vs.\ 0.585
+on BACE, and 0.749 vs.\ 0.778 on BBBP). On ClinTox its balanced accuracy (0.842)
+and MCC (0.466) are also lower than those of the best fixed size. On BBBP,
+however, its macro F1 (0.719) is higher than that of the $k=8$ configuration
+(0.711) and its MCC (0.454) is within 0.02 of the best MCC of the sweep
+(0.474 at $k=15$). These results indicate that a support-set size selected per
+dataset is preferable to mixing sizes within a single run.
+
+On BACE, the AUC-ROC of 0.585 (MCC 0.158) is close to chance and lies below the
+values reported for the baselines in Section~\ref{subsec:compare}
+(Table~\ref{tab:context}), although the protocols differ; this indicates that
+the compression signal alone under random 70/30 splitting is insufficient for
+this binding-affinity task. On BBBP, the AUC-ROC of 0.778 (MCC 0.438) indicates
+that SMILES string compression encodes a partial signal for blood-brain barrier
+penetration, a property driven by molecular size, polarity, and hydrogen-bonding
+capacity, all of which manifest in SMILES character patterns \cite{bib15}.
+Across the three best test-set configurations of
+Table~\ref{tab:scope_results}, the mean test AUC-ROC amounts to 0.765. These
+results support the hypothesis that raw SMILES strings, despite their
+non-unique graph encoding \cite{bib23,bib24}, contain sufficient structural
+redundancy for compression-based dissimilarity to recover useful similarity
+rankings, consistent with the theoretical upper bound of NCD on the true NID
+\cite{bib2}; nevertheless, the gap relative to the baselines underscores the
+limits of the raw-string compression signal on structurally heterogeneous
+tasks.
+
+The configurations selected by the search at the best test support-set size of
+each dataset are listed in Appendix~\ref{app:sweep}. In every dataset and
+setting of the sweep, the selected \texttt{keep\_similar} is \texttt{True}. For
+the three configurations of Table~\ref{tab:scope_results}, the
+compressor--metric subsets vary across tasks: on BACE ($k=3$) the search
+retains NCD alone with compressors \{zlib, gzip\}; on BBBP ($k=8$) the full
+compressor family \{bz2, zlib, gzip\} is combined with \{CDM, CLM\}; and on
+ClinTox ($k=10$), \{bz2, gzip\} with \{CDM, CLM\}. None of these three
+configurations relies on a single compressor or activates all three metrics
+simultaneously. The two tasks with the strongest test signal (BBBP and ClinTox)
+both select CDM and CLM, whereas the weaker BACE signal is captured by NCD
+alone. The compressor--metric subsets and \texttt{keep\_similar} are the
+\texttt{arg\,max} of the search objective (balanced accuracy, 30\% search
+split) over the 98 configurations enumerated per support-set size; only the
+choice of $k$ reported in Table~\ref{tab:scope_results} is made on the test
+split.
+
+% [FIGURE PLACEHOLDER: classification results (BACE, BBBP, ClinTox) -- add here
+% and cite it in the text once the images are available]
