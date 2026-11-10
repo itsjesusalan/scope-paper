@@ -37,7 +37,7 @@ On ClinTox, SCoPE attains an AUC-ROC of 0.933 at $k=10$ and an accuracy of
 F1 (0.741) and MCC (0.550) are lower than the AUC-ROC and the balanced
 accuracy (0.890), which reflects the inherent difficulty of detecting rare
 toxic compounds from a small support set, a challenge shared by low-data
-approaches \cite{bib21,bib5}. Since AUC-ROC is the headline metric, $k=10$ is
+approaches \cite{zhang2024molfescue,wu2018moleculenet}. Since AUC-ROC is the headline metric, $k=10$ is
 reported in Table~\ref{tab:scope_results}; however, this choice does not
 dominate every metric across the ClinTox sweep: the best balanced accuracy
 (0.903) is obtained at $k=8$, the best macro F1 (0.756) and MCC (0.570) at
@@ -65,14 +65,14 @@ the compression signal alone under random 70/30 splitting is insufficient for
 this binding-affinity task. On BBBP, the AUC-ROC of 0.778 (MCC 0.438) indicates
 that SMILES string compression encodes a partial signal for blood-brain barrier
 penetration, a property driven by molecular size, polarity, and hydrogen-bonding
-capacity, all of which manifest in SMILES character patterns \cite{bib15}.
+capacity, all of which manifest in SMILES character patterns \cite{martins2012bayesian}.
 Across the three best test-set configurations of
 Table~\ref{tab:scope_results}, the mean test AUC-ROC amounts to 0.765. These
 results support the hypothesis that raw SMILES strings, despite their
-non-unique graph encoding \cite{bib23,bib24}, contain sufficient structural
+non-unique graph encoding \cite{li2022novel,bennett1998information}, contain sufficient structural
 redundancy for compression-based dissimilarity to recover useful similarity
 rankings, consistent with the theoretical upper bound of NCD on the true NID
-\cite{bib2}; nevertheless, the gap relative to the baselines underscores the
+\cite{cilibrasi2005clustering}; nevertheless, the gap relative to the baselines underscores the
 limits of the raw-string compression signal on structurally heterogeneous
 tasks.
 

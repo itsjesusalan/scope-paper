@@ -1,4 +1,25 @@
-@article{bib1a,
+% SCoPE reference database. Entries are grouped by topic (not by citation order;
+% the numbering in the PDF follows first citation). Commented entries are not cited
+% in the manuscript. BibTeX treats any at-sign as an entry start even after a percent
+% sign, so commented entries have no at-sign: to reuse one, uncomment its lines and
+% put the at-sign back before the entry type.
+
+% ---------------------------------------------------------------------
+% 1. Context and motivation
+% ---------------------------------------------------------------------
+
+@article{dimasi2016innovation,
+  author = {Dimasi, J. A. and Grabowski, H. G. and Hansen, R. W.},
+  title = {Innovation in the pharmaceutical industry: new estimates of R\&D
+           costs},
+  journal = {J. Health Econ.},
+  volume = {47},
+  pages = {20--33},
+  year = {2016},
+  doi = {10.1016/j.jhealeco.2016.01.012},
+}
+
+@article{walters2021applications,
   author = {Walters, W. P. and Barzilay, R.},
   title = {Applications of deep learning in molecule generation and molecular
            property prediction},
@@ -10,95 +31,7 @@
   doi = {10.1021/acs.accounts.0c00699},
 }
 
-@article{bib2,
-  author = {Cilibrasi, R. and Vit{\'a}nyi, P. M. B.},
-  title = {Clustering by compression},
-  journal = {IEEE Trans. Inf. Theory},
-  volume = {51},
-  number = {4},
-  pages = {1523--1545},
-  year = {2005},
-  doi = {10.1109/TIT.2005.844059},
-}
-
-@article{bib3,
-  author = {Keogh, E. and Lonardi, S. and Ratanamahatana, C. A. and Wei, L. and
-            Lee, S. h. and Handley, J.},
-  title = {Compression-based data mining of sequential data},
-  journal = {Data Min. Knowl. Discov.},
-  volume = {14},
-  number = {1},
-  pages = {99--129},
-  year = {2007},
-  doi = {10.1007/s10618-006-0049-3},
-}
-
-@article{bib4,
-  author = {Li, M. and Chen, X. and Li, X. and Ma, B. and Vit{\'a}nyi, P. M. B.},
-  title = {The similarity metric},
-  journal = {IEEE Trans. Inf. Theory},
-  volume = {50},
-  number = {12},
-  pages = {3250--3264},
-  year = {2004},
-  doi = {10.1109/TIT.2004.838101},
-}
-
-@article{bib5,
-  author = {Wu, Z. and Ramsundar, B. and Feinberg, E. N. and Gomes, J. and
-            Geniesse, C. and Pappu, A. S. and Leswing, K. and Pande, V.},
-  title = {MoleculeNet: a benchmark for molecular machine learning},
-  journal = {Chem. Sci.},
-  volume = {9},
-  number = {2},
-  pages = {513--530},
-  year = {2018},
-  doi = {10.1039/C7SC02664A},
-}
-
-@article{bib7a,
-  author = {Wang, Y. and Abuduweili, A. and Yao, Q. and Dou, D.},
-  title = {Property-aware relation networks for few-shot molecular property
-           prediction},
-  journal = {Adv. Neural Inf. Process. Syst.},
-  volume = {34},
-  pages = {17441--17454},
-  year = {2021},
-}
-
-@article{bib9,
-  author = {Jiang, Z. and Yang, M. Y. R. and Tsirlin, M. and Tang, R. and Lin,
-            J.},
-  title = {``Low-Resource'' Text Classification: a parameter-free classification
-           method with compressors},
-  journal = {Findings ACL},
-  pages = {6810--6828},
-  year = {2023},
-  doi = {10.18653/v1/2023.findings-acl.426},
-}
-
-@article{bib9a,
-  author = {Jiang, Z. and Dai, Y. and Xin, J. and Li, M. and Lin, J.},
-  title = {Few-shot non-parametric learning with deep latent variable model},
-  journal = {Adv. Neural Inf. Process. Syst.},
-  volume = {35},
-  pages = {26448--26461},
-  year = {2022},
-  doi = {10.48550/arXiv.2206.11573},
-}
-
-@article{bib10,
-  author = {Weinreich, J. and Probst, D.},
-  title = {Learning on compressed molecular representations},
-  journal = {Digital Discovery},
-  volume = {4},
-  number = {1},
-  pages = {84--92},
-  year = {2025},
-  doi = {10.1039/D4DD00162A},
-}
-
-@article{bib11,
+@article{xiong2020pushing,
   author = {Xiong, Z. and Wang, D. and Liu, X. and Zhong, F. and Wan, X. and Li,
             X. and Li, Z. and Luo, X. and Chen, K. and Jiang, H. and Zheng, M.},
   title = {Pushing the boundaries of molecular representation for drug discovery
@@ -111,7 +44,56 @@
   doi = {10.1021/acs.jmedchem.9b00959},
 }
 
-@article{bib12,
+% NOT CITED
+% article{guzmanpando2024deep,
+%   author = {Guzman-Pando, A. and Ramirez-Alonso, G. and Arzate-Quintana, C. and
+%             Camarillo-Cisneros, J.},
+%   title = {Deep learning algorithms applied to computational chemistry},
+%   journal = {Mol. Divers.},
+%   volume = {28},
+%   number = {4},
+%   pages = {2375--2410},
+%   year = {2024},
+%   doi = {10.1007/s11030-023-10771-y},
+% }
+
+% NOT CITED
+% article{aykol2024foundational,
+%   author = {Aykol, M. and Panapitiya, G. and Sriram, A. and Farrar, E. W.},
+%   title = {Foundational models in drug discovery},
+%   journal = {npj Drug Discov.},
+%   volume = {1},
+%   pages = {4},
+%   year = {2024},
+%   doi = {10.1038/s44386-024-00013-1},
+% }
+
+% ---------------------------------------------------------------------
+% 2. Few-shot / low-data molecular learning
+% ---------------------------------------------------------------------
+
+@article{altaetran2017low,
+  author = {Altae-Tran, H. and Ramsundar, B. and Pappu, A. S. and Pande, V.},
+  title = {Low data drug discovery with one-shot learning},
+  journal = {ACS Cent. Sci.},
+  volume = {3},
+  number = {4},
+  pages = {283--293},
+  year = {2017},
+  doi = {10.1021/acscentsci.6b00367},
+}
+
+@article{guo2021fewshot,
+  author = {Guo, Z. and Zhang, C. and Yu, W. and Herr, J. and Wiest, O. and
+            Jiang, M. and Chawla, N. V.},
+  title = {Few-shot graph learning for molecular property prediction},
+  journal = {Proc. WWW},
+  pages = {2559--2567},
+  year = {2021},
+  doi = {10.1145/3442381.3450112},
+}
+
+@article{vella2023fewshot,
   author = {Vella, D. and Ebejer, J. P.},
   title = {Few-shot learning for low-data drug discovery},
   journal = {J. Chem. Inf. Model.},
@@ -122,19 +104,7 @@
   doi = {10.1021/acs.jcim.2c00779},
 }
 
-@article{bib13,
-  author = {Gayvert, K. M. and Madhukar, N. S. and Elemento, O.},
-  title = {A data-driven approach to predicting successes and failures of
-           clinical trials},
-  journal = {Cell Chem. Biol.},
-  volume = {23},
-  number = {10},
-  pages = {1294--1301},
-  year = {2016},
-  doi = {10.1016/j.chembiol.2016.07.023},
-}
-
-@article{bib14,
+@article{fang2023evidential,
   author = {Fang, Y. and Zhang, Q. and Yang, H. and Zhuang, X. and Deng, S. and
             Zhang, W. and Huai, M. and Liu, T. and Chen, H. and Wu, F.},
   title = {Evidential meta-model for molecular property prediction},
@@ -146,64 +116,17 @@
   doi = {10.1093/bioinformatics/btad604},
 }
 
-@article{bib15,
-  author = {Martins, I. F. and Teixeira, A. L. and Pinheiro, L. and Falcao, A.
-            O.},
-  title = {A Bayesian approach to in silico blood-brain barrier penetration
-           modelling},
-  journal = {J. Chem. Inf. Model.},
-  volume = {52},
-  number = {6},
-  pages = {1686--1697},
-  year = {2012},
-  doi = {10.1021/ci300124c},
-}
-
-@article{bib16,
-  author = {Subramanian, G. and Ramsundar, B. and Pande, V. and Denny, R. A.},
-  title = {Computational modeling of BACE-1 inhibitors using ligand-based
-           approaches},
-  journal = {J. Chem. Inf. Model.},
-  volume = {56},
-  number = {10},
-  pages = {1936--1949},
-  year = {2016},
-  doi = {10.1021/acs.jcim.6b00290},
-}
-
-@article{bib18,
-  author = {Dimasi, J. A. and Grabowski, H. G. and Hansen, R. W.},
-  title = {Innovation in the pharmaceutical industry: new estimates of R\&D
-           costs},
-  journal = {J. Health Econ.},
-  volume = {47},
-  pages = {20--33},
-  year = {2016},
-  doi = {10.1016/j.jhealeco.2016.01.012},
-}
-
-@article{bib19,
-  author = {Guo, Z. and Zhang, C. and Yu, W. and Herr, J. and Wiest, O. and
-            Jiang, M. and Chawla, N. V.},
-  title = {Few-shot graph learning for molecular property prediction},
-  journal = {Proc. WWW},
-  pages = {2559--2567},
+@article{wang2021property,
+  author = {Wang, Y. and Abuduweili, A. and Yao, Q. and Dou, D.},
+  title = {Property-aware relation networks for few-shot molecular property
+           prediction},
+  journal = {Adv. Neural Inf. Process. Syst.},
+  volume = {34},
+  pages = {17441--17454},
   year = {2021},
-  doi = {10.1145/3442381.3450112},
 }
 
-@article{bib20,
-  author = {Altae-Tran, H. and Ramsundar, B. and Pappu, A. S. and Pande, V.},
-  title = {Low data drug discovery with one-shot learning},
-  journal = {ACS Cent. Sci.},
-  volume = {3},
-  number = {4},
-  pages = {283--293},
-  year = {2017},
-  doi = {10.1021/acscentsci.6b00367},
-}
-
-@article{bib21,
+@article{zhang2024molfescue,
   author = {Zhang, R. and Wu, C. and Yang, Q. and Liu, C. and Wang, Y. and Li,
             K. and Huang, L. and Zhou, F.},
   title = {MolFeSCue: enhancing molecular property prediction in data-limited
@@ -216,29 +139,11 @@
   doi = {10.1093/bioinformatics/btae118},
 }
 
-@article{bib22,
-  author = {Weininger, D.},
-  title = {SMILES, a chemical language and information system},
-  journal = {J. Chem. Inf. Comput. Sci.},
-  volume = {28},
-  number = {1},
-  pages = {31--36},
-  year = {1988},
-  doi = {10.1021/ci00057a005},
-}
+% ---------------------------------------------------------------------
+% 3. Foundations of compression-based similarity
+% ---------------------------------------------------------------------
 
-@article{bib23,
-  author = {Li, J. and Feng, J. and Diao, Y.},
-  title = {A novel molecular representation learning for molecular property
-           prediction with a multiple SMILES-based augmentation},
-  journal = {Comput. Intell. Neurosci.},
-  volume = {2022},
-  pages = {8464452},
-  year = {2022},
-  doi = {10.1155/2022/8464452},
-}
-
-@article{bib24,
+@article{bennett1998information,
   author = {Bennett, C. H. and G{\'a}cs, P. and Li, M. and Vit{\'a}nyi, P. M. B.
             and Zurek, W. H.},
   title = {Information distance},
@@ -250,7 +155,112 @@
   doi = {10.1109/18.681318},
 }
 
-@article{bib25,
+@article{li2004similarity,
+  author = {Li, M. and Chen, X. and Li, X. and Ma, B. and Vit{\'a}nyi, P. M. B.},
+  title = {The similarity metric},
+  journal = {IEEE Trans. Inf. Theory},
+  volume = {50},
+  number = {12},
+  pages = {3250--3264},
+  year = {2004},
+  doi = {10.1109/TIT.2004.838101},
+}
+
+@article{cilibrasi2005clustering,
+  author = {Cilibrasi, R. and Vit{\'a}nyi, P. M. B.},
+  title = {Clustering by compression},
+  journal = {IEEE Trans. Inf. Theory},
+  volume = {51},
+  number = {4},
+  pages = {1523--1545},
+  year = {2005},
+  doi = {10.1109/TIT.2005.844059},
+}
+
+@article{keogh2007compression,
+  author = {Keogh, E. and Lonardi, S. and Ratanamahatana, C. A. and Wei, L. and
+            Lee, S. h. and Handley, J.},
+  title = {Compression-based data mining of sequential data},
+  journal = {Data Min. Knowl. Discov.},
+  volume = {14},
+  number = {1},
+  pages = {99--129},
+  year = {2007},
+  doi = {10.1007/s10618-006-0049-3},
+}
+
+% NOT CITED
+% article{thompson2024neural,
+%   author = {Thompson, E. and Belanger, D. and Zhang, W.},
+%   title = {Neural normalized compression distance and the disconnect between
+%            compression and classification},
+%   journal = {arXiv:2410.15280},
+%   year = {2024},
+%   doi = {10.48550/arXiv.2410.15280},
+% }
+
+% ---------------------------------------------------------------------
+% 4. Compression-based classification
+% ---------------------------------------------------------------------
+
+@article{jiang2023lowresource,
+  author = {Jiang, Z. and Yang, M. Y. R. and Tsirlin, M. and Tang, R. and Lin,
+            J.},
+  title = {``Low-Resource'' Text Classification: a parameter-free classification
+           method with compressors},
+  journal = {Findings ACL},
+  pages = {6810--6828},
+  year = {2023},
+  doi = {10.18653/v1/2023.findings-acl.426},
+}
+
+@article{jiang2022fewshot,
+  author = {Jiang, Z. and Dai, Y. and Xin, J. and Li, M. and Lin, J.},
+  title = {Few-shot non-parametric learning with deep latent variable model},
+  journal = {Adv. Neural Inf. Process. Syst.},
+  volume = {35},
+  pages = {26448--26461},
+  year = {2022},
+  doi = {10.48550/arXiv.2206.11573},
+}
+
+@article{weinreich2025learning,
+  author = {Weinreich, J. and Probst, D.},
+  title = {Learning on compressed molecular representations},
+  journal = {Digital Discovery},
+  volume = {4},
+  number = {1},
+  pages = {84--92},
+  year = {2025},
+  doi = {10.1039/D4DD00162A},
+}
+
+% NOT CITED
+% article{anon2025enhancement,
+%   author = {Anon},
+%   title = {An enhancement of Jiang et al.'s compression-based classification
+%            algorithm applied to news article categorisation},
+%   journal = {arXiv:2502.14444},
+%   year = {2025},
+%   doi = {10.48550/arXiv.2502.14444},
+% }
+
+% ---------------------------------------------------------------------
+% 5. Molecular representations
+% ---------------------------------------------------------------------
+
+@article{weininger1988smiles,
+  author = {Weininger, D.},
+  title = {SMILES, a chemical language and information system},
+  journal = {J. Chem. Inf. Comput. Sci.},
+  volume = {28},
+  number = {1},
+  pages = {31--36},
+  year = {1988},
+  doi = {10.1021/ci00057a005},
+}
+
+@article{ross2022large,
   author = {Ross, J. and Belgodere, B. and Chenthamarakshan, V. and Padhi, I.
             and Mroueh, Y. and Das, P.},
   title = {Large-scale chemical language representations capture molecular
@@ -262,34 +272,33 @@
   doi = {10.1038/s42256-022-00580-7},
 }
 
-% =====================================================================
-% NOT CITED in the manuscript (commented out).
-% BibTeX treats any at-sign as an entry start, even after a percent sign,
-% so the at-sign was removed from each entry type below. To reuse an entry:
-% uncomment its lines and put the at-sign back before the entry type.
+@article{li2022novel,
+  author = {Li, J. and Feng, J. and Diao, Y.},
+  title = {A novel molecular representation learning for molecular property
+           prediction with a multiple SMILES-based augmentation},
+  journal = {Comput. Intell. Neurosci.},
+  volume = {2022},
+  pages = {8464452},
+  year = {2022},
+  doi = {10.1155/2022/8464452},
+}
 
-% article{bib11a,
-%   author = {Thompson, E. and Belanger, D. and Zhang, W.},
-%   title = {Neural normalized compression distance and the disconnect between
-%            compression and classification},
-%   journal = {arXiv:2410.15280},
-%   year = {2024},
-%   doi = {10.48550/arXiv.2410.15280},
+% NOT CITED
+% article{krenn2022selfies,
+%   author = {Krenn, M. and Ai, Q. and Barthel, S. and Carson, N. and Frei, A. and
+%             Frey, N. C. and Friederich, P. and Gaudin, T. and Gayle, A. A. and
+%             Jablonka, K. M. and others},
+%   title = {SELFIES and the future of molecular string representations},
+%   journal = {Patterns},
+%   volume = {3},
+%   number = {10},
+%   pages = {100588},
+%   year = {2022},
+%   doi = {10.1016/j.patter.2022.100588},
 % }
 
-% article{bib17,
-%   author = {Guzman-Pando, A. and Ramirez-Alonso, G. and Arzate-Quintana, C. and
-%             Camarillo-Cisneros, J.},
-%   title = {Deep learning algorithms applied to computational chemistry},
-%   journal = {Mol. Divers.},
-%   volume = {28},
-%   number = {4},
-%   pages = {2375--2410},
-%   year = {2024},
-%   doi = {10.1007/s11030-023-10771-y},
-% }
-
-% article{bib25a,
+% NOT CITED
+% article{yang2019analyzing,
 %   author = {Yang, K. and Swanson, K. and Jin, W. and Coley, C. and Eiden, P. and
 %             Gao, H. and Guzman-Perez, A. and Hopper, T. and Kelley, B. and Mathea
 %             , M. and Palmer, A. and Settels, V. and Jaakkola, t. and Jensen, K.
@@ -303,34 +312,55 @@
 %   doi = {10.1021/acs.jcim.9b00237},
 % }
 
-% article{bib26,
-%   author = {Krenn, M. and Ai, Q. and Barthel, S. and Carson, N. and Frei, A. and
-%             Frey, N. C. and Friederich, P. and Gaudin, T. and Gayle, A. A. and
-%             Jablonka, K. M. and others},
-%   title = {SELFIES and the future of molecular string representations},
-%   journal = {Patterns},
-%   volume = {3},
-%   number = {10},
-%   pages = {100588},
-%   year = {2022},
-%   doi = {10.1016/j.patter.2022.100588},
-% }
+% ---------------------------------------------------------------------
+% 6. Benchmarks and datasets
+% ---------------------------------------------------------------------
 
-% article{bib77,
-%   author = {Aykol, M. and Panapitiya, G. and Sriram, A. and Farrar, E. W.},
-%   title = {Foundational models in drug discovery},
-%   journal = {npj Drug Discov.},
-%   volume = {1},
-%   pages = {4},
-%   year = {2024},
-%   doi = {10.1038/s44386-024-00013-1},
-% }
+@article{wu2018moleculenet,
+  author = {Wu, Z. and Ramsundar, B. and Feinberg, E. N. and Gomes, J. and
+            Geniesse, C. and Pappu, A. S. and Leswing, K. and Pande, V.},
+  title = {MoleculeNet: a benchmark for molecular machine learning},
+  journal = {Chem. Sci.},
+  volume = {9},
+  number = {2},
+  pages = {513--530},
+  year = {2018},
+  doi = {10.1039/C7SC02664A},
+}
 
-% article{bib78,
-%   author = {Anon},
-%   title = {An enhancement of Jiang et al.'s compression-based classification
-%            algorithm applied to news article categorisation},
-%   journal = {arXiv:2502.14444},
-%   year = {2025},
-%   doi = {10.48550/arXiv.2502.14444},
-% }
+@article{gayvert2016datadriven,
+  author = {Gayvert, K. M. and Madhukar, N. S. and Elemento, O.},
+  title = {A data-driven approach to predicting successes and failures of
+           clinical trials},
+  journal = {Cell Chem. Biol.},
+  volume = {23},
+  number = {10},
+  pages = {1294--1301},
+  year = {2016},
+  doi = {10.1016/j.chembiol.2016.07.023},
+}
+
+@article{martins2012bayesian,
+  author = {Martins, I. F. and Teixeira, A. L. and Pinheiro, L. and Falcao, A.
+            O.},
+  title = {A Bayesian approach to in silico blood-brain barrier penetration
+           modelling},
+  journal = {J. Chem. Inf. Model.},
+  volume = {52},
+  number = {6},
+  pages = {1686--1697},
+  year = {2012},
+  doi = {10.1021/ci300124c},
+}
+
+@article{subramanian2016computational,
+  author = {Subramanian, G. and Ramsundar, B. and Pande, V. and Denny, R. A.},
+  title = {Computational modeling of BACE-1 inhibitors using ligand-based
+           approaches},
+  journal = {J. Chem. Inf. Model.},
+  volume = {56},
+  number = {10},
+  pages = {1936--1949},
+  year = {2016},
+  doi = {10.1021/acs.jcim.6b00290},
+}

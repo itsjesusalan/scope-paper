@@ -4,9 +4,9 @@
 
 The Kolmogorov complexity $K(x)$ is defined as the length of the
 shortest program that produces the binary string $x$ on a Universal
-Turing machine \cite{bib4}. Because $K(x)$ is uncomputable,
+Turing machine \cite{li2004similarity}. Because $K(x)$ is uncomputable,
 practical applications approximate it via lossless compression.
-The Normalized Information Distance (NID) \cite{bib4} is
+The Normalized Information Distance (NID) \cite{li2004similarity} is
 
 \begin{equation}
   \mathrm{NID}(x,y)
@@ -22,7 +22,7 @@ as auxiliary input); $K(y \mid x)$ is defined symmetrically; and
 $\max\{K(x), K(y)\}$ normalises the distance to $[0,1]$.
 
 Its computable approximation, the Normalized Compression Distance
-(NCD) \cite{bib2}, replaces $K$ with the output length $C_z(\cdot)$
+(NCD) \cite{cilibrasi2005clustering}, replaces $K$ with the output length $C_z(\cdot)$
 of lossless compressor $z$:
 
 \begin{equation}
@@ -37,9 +37,9 @@ $C_z(x)$ and $C_z(y)$ are their individually compressed lengths
 (bytes) under algorithm $z \in \mathcal{Z} = \{\texttt{gzip},
 \texttt{zlib}, \texttt{bz2}\}$; $C_z(xy)$ is the joint compressed
 length; and $\mathrm{NCD}_z \in [0,1+\varepsilon]$ with
-$\varepsilon \to 0$ as compressor quality improves \cite{bib2}.
+$\varepsilon \to 0$ as compressor quality improves \cite{cilibrasi2005clustering}.
 
-The Compression-based Dissimilarity Measure (CDM) \cite{bib3}
+The Compression-based Dissimilarity Measure (CDM) \cite{keogh2007compression}
 provides a complementary formulation:
 
 \begin{equation}
@@ -53,7 +53,7 @@ emphasises marginal compression gain, whereas CDM expresses the
 ratio of joint to summed compressed lengths: two metrics that
 capture complementary aspects of informational overlap.
 
-The Compression Length Measure (CLM)\cite{bib9a}
+The Compression Length Measure (CLM)\cite{jiang2022fewshot}
 \revadd{complements the previous formulations through a
 length-normalised expression}:
 
@@ -153,7 +153,7 @@ query.
 gzip and zlib implement Lempel-Ziv-77 coding (short-range pattern
 matching); bz2 applies Burrows-Wheeler block sorting followed by
 Huffman coding, capturing long-range SMILES dependencies
-unavailable to Lempel-Ziv schemes \cite{bib3}.
+unavailable to Lempel-Ziv schemes \cite{keogh2007compression}.
 
 \begin{figure}[H]
     \centering
@@ -316,20 +316,20 @@ this methodological difference} (see Section~\ref{subsec:compare}).
 \subsection{Datasets}\label{subsec:data}
 
 All experiments used three benchmark datasets from MoleculeNet
-\cite{bib5}. \textbf{ClinTox} \cite{bib13} comprises 1,478
+\cite{wu2018moleculenet}. \textbf{ClinTox} \cite{gayvert2016datadriven} comprises 1,478
 compounds annotated for clinical trial toxicity and FDA approval
 status; the positive (toxic) class accounts for approximately 8\%
 of instances, making it highly imbalanced. The drugs considered as
 toxic were originally obtained from the AACT database, while those
 approved were obtained from DrugBank 4.0, providing a robust
 framework for evaluating structure-toxicity relationships
-\cite{bib13}. \textbf{BBBP} \cite{bib15} contains 2,053 compounds
+\cite{gayvert2016datadriven}. \textbf{BBBP} \cite{martins2012bayesian} contains 2,053 compounds
 annotated for blood-brain barrier penetration; the dataset was
 compiled from multiple publications and curated to resolve
-annotation inconsistencies \cite{bib15}. \textbf{BACE} \cite{bib16}
+annotation inconsistencies \cite{martins2012bayesian}. \textbf{BACE} \cite{subramanian2016computational}
 contains 1,513 compounds with binary BACE-1 binding inhibition
 \revmod{labels; the binary activity label (Class) is used as target.
-All molecules are represented by the SMILES strings} \cite{bib22}
+All molecules are represented by the SMILES strings} \cite{weininger1988smiles}
 \revmod{without further canonicalisation, sanitisation, or
 featurisation.}
 

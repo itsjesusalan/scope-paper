@@ -3,39 +3,39 @@
 Drug discovery is a process of exceptional scientific and economic
 complexity: the identification of a single clinical candidate
 requires, on average, more than a decade and expenditures exceeding
-one billion US dollars \cite{bib18}. A key bottleneck is the
+one billion US dollars \cite{dimasi2016innovation}. A key bottleneck is the
 experimental annotation of molecular properties---bioactivity,
 toxicity, membrane permeability, and metabolic stability---for the
 large chemical libraries assembled during early-stage screening.
 Although high-throughput experimental techniques have expanded the
 scale at which annotations can be acquired, the labelled data
 available for most individual assays remains modest in comparison
-with the requirements of modern supervised architectures \cite{bib1a}.
+with the requirements of modern supervised architectures \cite{walters2021applications}.
 
 Machine learning has made substantial inroads into molecular property
 prediction over the past decade. Quantitative structure-activity
 relationship (QSAR) models based on molecular fingerprints, most
 notably the Extended Connectivity Fingerprint (ECFP) family
-\cite{bib5}, established strong baselines by encoding local atomic
+\cite{wu2018moleculenet}, established strong baselines by encoding local atomic
 environments as binary bit vectors amenable to conventional
 classifiers. More recently, graph neural networks (GNNs) have
-emerged as the dominant paradigm \cite{bib11}, representing molecules
+emerged as the dominant paradigm \cite{xiong2020pushing}, representing molecules
 as attributed graphs and applying message-passing operations to
 aggregate neighbourhood information into expressive molecular
 representations. Nevertheless, the predictive power of these models
 degrades under data-scarce conditions, since their high-dimensional
 parameter spaces require large annotated corpora to avoid
-overfitting \cite{bib19}.
+overfitting \cite{guo2021fewshot}.
 
 Data scarcity has motivated the development of few-shot and
-meta-learning approaches. Altae-Tran et al.\ \cite{bib20} introduced
+meta-learning approaches. Altae-Tran et al.\ \cite{altaetran2017low} introduced
 the iterative refinement LSTM combined with graph convolutions for
 one-shot learning of molecular activities. Subsequent work proposed
-model-agnostic meta-learning (MAML) \cite{bib12}, prototypical
-networks \cite{bib14}, and property-aware relational networks
-\cite{bib7a}, all of which exploit auxiliary tasks from related
+model-agnostic meta-learning (MAML) \cite{vella2023fewshot}, prototypical
+networks \cite{fang2023evidential}, and property-aware relational networks
+\cite{wang2021property}, all of which exploit auxiliary tasks from related
 assays to initialise models in parameter regions from which fast
-adaptation with few examples is possible. Zhang et al.\ \cite{bib21}
+adaptation with few examples is possible. Zhang et al.\ \cite{zhang2024molfescue}
 further addressed the joint challenge of data scarcity and class
 imbalance through a few-shot contrastive learning framework
 (MolFeSCue) with a dynamic contrastive loss. Despite strong
@@ -46,12 +46,12 @@ for a given target cannot be guaranteed \textit{a priori}.
 A conceptually attractive alternative is offered by
 compression-based similarity measures rooted in algorithmic
 information theory. The Normalized Compression Distance (NCD),
-introduced by Cilibrasi and Vitányi \cite{bib2} as a computable
+introduced by Cilibrasi and Vitányi \cite{cilibrasi2005clustering} as a computable
 approximation to the theoretically optimal Normalized Information
-Distance \cite{bib4}, provides a parameter-free, domain-agnostic
+Distance \cite{li2004similarity}, provides a parameter-free, domain-agnostic
 measure of string similarity that has been applied successfully to
 phylogenetic reconstruction, music classification, and text
-clustering \cite{bib2,bib3}. The central insight is that if two
+clustering \cite{cilibrasi2005clustering,keogh2007compression}. The central insight is that if two
 objects share informational content, a good compressor will
 recognise this shared structure and compress their concatenation
 more efficiently than the sum of their individual compressed
@@ -59,18 +59,18 @@ lengths. This principle requires no feature engineering, no
 gradient computation, and no domain-specific knowledge.
 
 This paradigm received renewed attention after Jiang et al.\
-\cite{bib9} demonstrated that a gzip-based kNN classifier achieves
+\cite{jiang2023lowresource} demonstrated that a gzip-based kNN classifier achieves
 competitive performance with fine-tuned large language models on
 several text classification benchmarks. Weinreich and Probst
-\cite{bib10} subsequently translated this finding to cheminformatics,
+\cite{weinreich2025learning} subsequently translated this finding to cheminformatics,
 showing that NCD computed over SMILES strings achieves performance
 comparable to ECFP-based kNN on BACE, BBBP, and aqueous solubility
 tasks. These results suggest that \revmod{SMILES strings}
-\cite{bib22}---originally designed as a compact notation for
+\cite{weininger1988smiles}---originally designed as a compact notation for
 molecular graphs---encode sufficient structural information for
 compression-based methods to recover biologically relevant
 similarity patterns, consistent with the growing use of SMILES as
-input for transformer-based molecular language models \cite{bib25}.
+input for transformer-based molecular language models \cite{ross2022large}.
 
 The present work extends the compression-based molecular
 classification paradigm in four specific directions. First, SCoPE
@@ -80,7 +80,7 @@ regularities in SMILES. Second, instead of direct pairwise NCD
 lookup for kNN classification, SCoPE constructs a centroid-based
 geometric representation of each candidate class in the
 dissimilarity matrix space, providing a more stable class signature
-for small support sets. Third, SCoPE incorporates CDM \cite{bib3}
+for small support sets. Third, SCoPE incorporates CDM \cite{keogh2007compression}
 \revadd{and CLM} alongside NCD, capturing complementary aspects of
 informational overlap. Fourth, SCoPE applies \revmod{the product of the
 Euclidean and cosine distances} to the centroid--query comparison and
