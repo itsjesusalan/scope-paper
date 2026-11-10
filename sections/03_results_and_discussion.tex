@@ -40,21 +40,31 @@ The three benchmarks differ substantially in class balance, and the aggregate
 metrics of Table~\ref{tab:scope_results} are consequently not comparable across
 datasets without reference to the class distribution of each test partition, in
 which positive instances account for 8.2\% (ClinTox), 25.2\% (BBBP) and 54.2\%
-(BACE) of the examples. On ClinTox the decision rule is not biased towards the
-majority class: sensitivity reaches 0.901 and specificity 0.878, so 64 of the 71
-toxic compounds are recovered. Because the positive class is so small, however,
-the 97 negative instances misclassified by that same rule outnumber the entire
-positive class.
+(BACE) of the examples. The relevant reference on ClinTox is therefore not the
+raw accuracy but the trivial majority-class predictor, which attains 91.8\%
+accuracy on this partition while recovering no toxic compound whatsoever. SCoPE
+instead reaches a sensitivity of 0.901 at a specificity of 0.878, thereby
+recovering 64 of the 71 toxic compounds; the ensemble consequently extracts a
+genuine minority-class signal rather than exploiting the skew of the labels.
 
-This imbalance accounts for the divergence between the threshold-independent and
-the threshold-dependent metrics on ClinTox. The AUC-ROC (0.933) and the balanced
-accuracy (0.890) average the two class-conditional rates and are therefore
-dominated by the high sensitivity and specificity; the macro F1 (0.741) and the
-MCC (0.550), in contrast, incorporate the absolute number of misclassified
-negatives and are consequently depressed by it. The discrepancy is thus a
-property of the class distribution under an 8.2\% positive rate rather than an
-indication of an unreliable ranking, a pattern shared by low-data approaches on
-imbalanced molecular benchmarks~\cite{zhang2024molfescue,wu2018moleculenet}. It
+This asymmetry also accounts for the divergence between the
+threshold-independent and the threshold-dependent metrics on ClinTox. The
+AUC-ROC (0.933) and the balanced accuracy (0.890) average the two
+class-conditional rates and are therefore dominated by the high sensitivity and
+specificity; the macro F1 (0.741) and the MCC (0.550), in contrast, incorporate
+the absolute number of misclassified negatives, of which 97 remain. Two
+considerations qualify this figure. First, the majority vote of
+Eq.~\eqref{eq:majority} fixes the operating point implicitly and exposes no
+decision threshold to be calibrated, so the threshold-dependent metrics
+characterise one uncalibrated operating point rather than the limit of the
+ranking, which the AUC-ROC of 0.933 shows to be informative. Second, the
+resulting trade-off favours sensitivity over the false-alarm rate, which is the
+conservative direction for a toxicity screen, where an undetected toxic compound
+is considerably more costly than a candidate flagged for further assay. The
+discrepancy is thus a property of the class distribution under an 8.2\% positive
+rate rather than an indication of an unreliable ranking, a pattern shared by
+low-data approaches on imbalanced molecular
+benchmarks~\cite{zhang2024molfescue,wu2018moleculenet}. It
 also follows that the AUC-driven choice of $k$ does not dominate every metric
 across the ClinTox sweep: the best balanced accuracy (0.903) is obtained at
 $k=8$, and the best macro F1 (0.756) and MCC (0.570) at $k=15$, whereas the
@@ -69,11 +79,12 @@ The class distribution also clarifies the two weaker benchmarks. On BACE the
 positive class accounts for 54.2\% of the test instances, so the task is close to
 balanced and the baseline of an uninformed classifier is correspondingly high;
 an AUC-ROC of 0.585 with an MCC of 0.158 and a sensitivity of 0.588 therefore
-indicates a weak but non-null signal rather than a systematic error, and lies
-below the values reported for the baselines in
-Section~\ref{subsec:compare} (Table~\ref{tab:context}), notwithstanding the
-protocol differences. The compression signal alone, under random 70/30
-splitting, is thus insufficient for this binding-affinity task. On BBBP, by
+indicates a weak but non-null signal rather than a systematic error. It
+nonetheless falls below the AUC-ROC of 0.73 reported for a compression-based
+nearest-neighbour classifier on the same benchmark under a random
+split~\cite{weinreich2025learning}, notwithstanding the differences between the
+two protocols. The compression signal alone, under random 70/30 splitting, is
+thus insufficient for this binding-affinity task. On BBBP, by
 contrast, an AUC-ROC of 0.778 combined with a specificity of 0.777 and a
 sensitivity of 0.701 indicates that SMILES string compression encodes a partial
 signal for blood-brain barrier penetration, a property governed by molecular
