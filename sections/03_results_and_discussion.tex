@@ -111,14 +111,14 @@ it.
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\linewidth, keepaspectratio]{images/classification_results/bace_evaluation.png}
+        \includegraphics[width=\linewidth, keepaspectratio]{images/results/bace_test_eval.png}
         \caption{BACE dataset}
         \label{fig:eval_bace}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.48\textwidth}
         \centering
-        \includegraphics[width=\linewidth, keepaspectratio]{images/classification_results/bbbp_evaluation.png}
+        \includegraphics[width=\linewidth, keepaspectratio]{images/results/bbbp_test_eval.png}
         \caption{BBBP dataset}
         \label{fig:eval_bbbp}
     \end{subfigure}
@@ -126,13 +126,13 @@ it.
     \vspace{1em}
     \begin{subfigure}[b]{0.55\textwidth}
         \centering
-        \includegraphics[width=\linewidth, keepaspectratio]{images/classification_results/clintox_evaluation.png}
+        \includegraphics[width=\linewidth, keepaspectratio]{images/results/clintox_test_eval.png}
         \caption{ClinTox dataset}
         \label{fig:eval_clintox}
     \end{subfigure}
 
     \caption{Test-split performance across support-set sizes
-    $k\in\{3,5,8,10,15,17,20\}$ for the three benchmarks. Each panel reports
+    $k\in\{3,5,8,10,15,17,20, variable\}$ for the three benchmarks. Each panel reports
     \texttt{auc\_roc}, \texttt{f1\_score}, \texttt{balanced\_accuracy} and
     \texttt{mcc} of the configuration selected on the search split at that
     support-set size.}
