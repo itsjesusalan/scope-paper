@@ -81,7 +81,8 @@ lookup for kNN classification, SCoPE constructs a centroid-based
 geometric representation of each candidate class in the
 dissimilarity matrix space, providing a more stable class signature
 for small support sets. Third, SCoPE incorporates CDM \cite{keogh2007compression}
-\revadd{and CLM} alongside NCD, capturing complementary aspects of
+\revadd{and CLM}\cite{jiang2022fewshot}
+ alongside NCD, capturing complementary aspects of
 informational overlap. Fourth, SCoPE applies \revmod{the product of the
 Euclidean and cosine distances} to the centroid--query comparison and
 resolves the final prediction by majority voting \revmod{over the base
