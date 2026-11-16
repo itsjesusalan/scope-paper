@@ -97,35 +97,24 @@ the 30\% search partition:
 
 \noindent where $k$ is selected via grid search on the search split
 and $\mathcal{I}_{\mathrm{search}}$ is the index set of the search
-partition. The binary flag \texttt{keep\_similar} controls whether the
-self-similarity entries---the diagonal elements of the pairwise matrix,
-where a string is compared with itself---are retained
-(\texttt{keep\_similar}=\texttt{True}) or omitted
-(\texttt{keep\_similar}=\texttt{False}). When retained, the matrix gains
-one additional feature column per comparison (the query-to-query and
-support-to-support entries), enlarging the feature dimensionality from
-$k$ to $k+1$; when omitted, the diagonal is skipped.
-\revmod{Here and below we write $p = k + 1$ when
-\texttt{keep\_similar}=\texttt{True} and $p = k$ otherwise, to denote
-the per-row feature dimensionality of the dissimilarity matrices, which
-therefore depends on \texttt{keep\_similar}.}
-Both settings are
-explored by the search procedure. This is an implementation-level
-feature-selection decision \revmod{over the dimensionality of the
-dissimilarity representation} rather than a similarity threshold on the
-support set.
+partition. \revmod{Self-comparison entries---the diagonal elements of the
+pairwise matrix, where a string is compared with itself---are always
+retained. Consequently, every row of the dissimilarity matrices defined
+below contains $k+1$ comparison entries (the $k$ support strings and the
+query), and the feature dimensionality is fixed to $k+1$ in all
+experiments; this choice is not treated as a hyperparameter and is not
+explored by the search procedure.}
 
 \subsection{Stage 2: Dissimilarity Matrix Computation}\label{subsec:stage2}
 
 For each class $c$, compressor $z$, and metric
 $d \in \mathcal{M}$, a matrix
 \revmod{$\mathbf{M}^{(z,d)}_c \in
-\mathbb{R}^{(k+1)\times p}$} is
+\mathbb{R}^{(k+1)\times (k+1)}$} is
 computed over $\hat{\mathcal{S}}_c = \mathcal{S}_c \cup \{m_q\}$,
-\revmod{where $p$ is the per-row feature dimensionality defined above
-($p = k+1$ with \texttt{keep\_similar}=\texttt{True}, $p = k$
-otherwise), so the matrix has $k+1$ rows---one per support string plus
-the query---and $p$ retained comparison columns}:
+\revmod{so that the matrix has $k+1$ rows---one per support string plus
+the query---and $k+1$ columns, one per element of
+$\hat{\mathcal{S}}_c$, including the diagonal self-comparisons}:
 
 \begin{equation}
   \left[\mathbf{M}^{(z,d)}_c\right]_{ij}
@@ -136,9 +125,8 @@ the query---and $p$ retained comparison columns}:
 
 \noindent where $d_z$ is \revmod{one of} $\mathrm{NCD}_z$, $\mathrm{CDM}_z$, \revmod{or $\mathrm{CLM}_z$};
 $s_i, s_j$ are SMILES strings indexed $1$ to $k+1$; index
-$k+1$ is reserved for $m_q$; \revmod{and when
-\texttt{keep\_similar}=\texttt{False} the self-comparison entries
-($s_i$ versus itself) are dropped from the columns}. The complete set
+$k+1$ is reserved for $m_q$; \revmod{and the self-comparison entries
+($i = j$) are retained}. The complete set
 of matrices is
 
 \begin{equation}
@@ -174,8 +162,8 @@ members:
 \end{equation}
 
 \noindent where $\mathbf{M}^{(z,d)}_c[i,\,:]$ is the $i$-th row
-\revmod{(dimension $p$)}; and $\boldsymbol{\mu}_c^{(z,d)} \in
-\revmod{\mathbb{R}^{p}}$ encodes the mean dissimilarity profile of class
+\revmod{(dimension $k+1$)}; and $\boldsymbol{\mu}_c^{(z,d)} \in
+\revmod{\mathbb{R}^{k+1}}$ encodes the mean dissimilarity profile of class
 $c$. The query feature vector is
 
 \begin{equation}
@@ -185,8 +173,8 @@ $c$. The query feature vector is
 \end{equation}
 
 \noindent where $k+1$ is the reserved query index, and
-$\mathbf{q}_c^{(z,d)} \in \revmod{\mathbb{R}^{p}}$ encodes the
-dissimilarity of $m_q$ to every augmented-support element.
+$\mathbf{q}_c^{(z,d)} \in \revmod{\mathbb{R}^{k+1}}$ encodes the
+dissimilarity of $m_q$ to \revmod{every element of the augmented support set (including itself)}.
 \revmod{Two distance factors are computed from these vectors and
 combined multiplicatively into the scoring distance;}
 the individual factors are then collapsed into the product
@@ -196,11 +184,11 @@ the individual factors are then collapsed into the product
 \begin{equation}
   d_{\mathrm{E}}(\boldsymbol{\mu},\mathbf{q})
   = \|\boldsymbol{\mu} - \mathbf{q}\|_2
-  = \sqrt{\sum_{l=1}^{\revmod{p}}(\mu_l - q_l)^2},
+  = \sqrt{\sum_{l=1}^{\revmod{k+1}}(\mu_l - q_l)^2},
   \label{eq:euclidean}
 \end{equation}
 where $\mu_l, q_l$ are the $l$-th components and the sum runs over
-\revmod{all $p$ dimensions} of the feature vectors. Euclidean distance is sensitive to absolute
+\revmod{all $k+1$ dimensions} of the feature vectors. Euclidean distance is sensitive to absolute
 magnitude differences.
 
 \paragraph{Cosine distance}
@@ -275,10 +263,10 @@ vector.}
 
 \subsection{Parameter Search and Experimental Protocol}\label{subsec:params}
 
-\revmod{The exhaustive grid search considers three hyperparameters: the
-compressor set $\mathcal{C}$, the dissimilarity-metric set $\mathcal{M}$,
-and the \texttt{keep\_similar} flag, which can take either
-$\mathrm{True}$ or $\mathrm{False}$. The sets $\mathcal{C}$ and
+\revmod{The exhaustive grid search considers two hyperparameters: the
+compressor set $\mathcal{C}$ and the dissimilarity-metric set
+$\mathcal{M}$; the self-similarity setting is held fixed (see
+Section~\ref{subsec:stage1}). The sets $\mathcal{C}$ and
 $\mathcal{M}$ can be any non-empty subsets of
 $\{\texttt{bz2}, \texttt{zlib}, \texttt{gzip}\}$ and
 $\{\mathrm{NCD}, \mathrm{CDM}, \mathrm{CLM}\}$, respectively.
@@ -287,8 +275,8 @@ combination or multiple combinations. In the latter case, each
 compressor--metric pair contributes one feature to the dissimilarity
 matrix; each feature votes for the class whose support centroid lies
 closest to the query, and the final prediction is determined by majority
-voting. This results in $7 \times 7 \times 2 = 98$ candidate
-configurations.}
+voting. This results in $7 \times 7 = 49$ candidate
+configurations per support-set protocol.}
 
 \revmod{Each configuration is evaluated under two protocols governing the
 support-set size $k$. In the \emph{fixed} protocol, $k$ is held
