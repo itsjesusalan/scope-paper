@@ -105,14 +105,13 @@ the gain from enlarging the support set is concentrated in its first
 increments. On BBBP the metrics fluctuate within a narrow band (test AUC-ROC
 between 0.688 at $k=3$ and 0.755 at $k=10$) with a shallow maximum at
 $k\in\{10,15\}$, whereas on BACE they decay towards chance as
-$k$ grows, with the MCC falling from 0.158 at $k=3$ to $-0.006$ at $k=17$.
+$k$ grows, with the MCC falling from 0.150 at $k=3$ to $-0.006$ at $k=17$.
 Consequently, enlarging the support set is beneficial only where the
 compression-based dissimilarity separates the classes in the first place; where
 it does not, additional support members dilute the centroid rather than refine
 it.
 
 % Per-dataset test metrics across support-set sizes.
-% Expected files: images/classification_results/{bace,bbbp,clintox}_evaluation.png
 \begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
@@ -138,7 +137,8 @@ it.
     \end{subfigure}
 
     \caption{Test-split performance across support-set sizes
-    $k\in\{3,5,8,10,15,17,20, variable\}$ for the three benchmarks. Each panel reports
+    $k\in\{3,5,8,10,15,17,20\}$ and the \texttt{variable} setting for the
+    three benchmarks. Each panel reports
     \texttt{auc\_roc}, \texttt{f1\_score}, \texttt{balanced\_accuracy} and
     \texttt{mcc} of the configuration selected on the search split at that
     support-set size.}

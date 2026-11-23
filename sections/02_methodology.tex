@@ -53,25 +53,52 @@ emphasises marginal compression gain, whereas CDM expresses the
 ratio of joint to summed compressed lengths: two metrics that
 capture complementary aspects of informational overlap.
 
-The Compression Length Measure (CLM)\cite{jiang2022fewshot}
-\revadd{complements the previous formulations through a
-length-normalised expression}:
+\revmod{The third measure was introduced by Chen et
+al.~\cite{chen1999compression} and shown to be a metric, up to minor
+deviations, by Li et al.~\cite{li2001information}; we refer to it as the
+Chen--Li Metric (CLM) following Sculley and
+Brodley~\cite{sculley2006compression}}:
 
 \begin{equation}
   \mathrm{CLM}_z(x,y)
-  = 1 - \frac{\bigl(C_z(x) + C_z(y) - C_z(xy)\bigr)}
-         {C_z(xy)},
+  = 1 - \frac{C_z(x) - C_z(x \mid y)}{C_z(xy)},
   \label{eq:clm}
 \end{equation}
 
-\noindent \revadd{where all symbols are as in Eq.~\eqref{eq:ncd}; the numerator
-rewards joint compressibility by quantifying the residual between the
-summed individual compressed lengths and the joint compressed length,
-while the denominator normalises by the joint length. In the experiments
-reported below, the full metric family
-$\mathcal{M} = \{\mathrm{NCD}, \mathrm{CDM}, \mathrm{CLM}\}$ is exposed
-to the search procedure, and the best-performing subset per dataset is
-selected on the search split}.
+\noindent \revmod{where $C_z(x \mid y)$ denotes the compressed length of $x$
+with $y$ supplied as auxiliary input. Off-the-shelf compressors expose no
+conditional mode, so we adopt the standard substitution
+$C_z(x \mid y) \approx C_z(xy) - C_z(y)$
+\cite{sculley2006compression,cilibrasi2005clustering}, under which}
+
+\begin{equation}
+  \mathrm{CLM}_z(x,y)
+  = 1 - \frac{C_z(x) + C_z(y) - C_z(xy)}{C_z(xy)}
+  = 2 - \frac{1}{\mathrm{CDM}_z(x,y)},
+  \label{eq:clmapprox}
+\end{equation}
+
+\noindent \revmod{the numerator of the central expression quantifying the
+information shared by the two strings as the residual between their summed and
+their joint compressed lengths, normalised by the joint length;
+$\mathrm{CLM}_z \in [0,1]$ whenever $\mathrm{CDM}_z \geq 1/2$, which holds for
+the three compressors considered here.}
+
+\revmod{The identity on the right of Eq.~\eqref{eq:clmapprox} bears directly on
+how the ensemble should be interpreted. Under the off-the-shelf approximation,
+CLM is an order-preserving reparametrisation of CDM, so both rank any set of
+string pairs identically and carry no information that is complementary between
+them. The two are nonetheless not interchangeable within SCoPE: the centroid of
+Eq.~\eqref{eq:centroid} averages matrix entries before the distance of
+Eq.~\eqref{eq:combined} is evaluated, and neither the arithmetic mean nor the
+Euclidean and cosine factors are invariant under a non-affine monotone
+rescaling. Any disagreement between the CDM and the CLM channel is therefore
+geometric rather than informational in origin, a distinction examined in
+Section~\ref{subsec:ablation}. NCD normalises instead by the larger of the two
+individual compressed lengths and is not a monotone function of either measure.
+The full family $\mathcal{M} = \{\mathrm{NCD}, \mathrm{CDM}, \mathrm{CLM}\}$ is
+exposed to the search procedure, which selects a subset per dataset on the
+search split.}
 
 \subsection{Pipeline Overview}\label{subsec:pipeline}
 
@@ -237,20 +264,24 @@ centroid is closest to the query under that compressor--metric
 combination. \revmod{Note that the Euclidean and cosine distances are
 computed internally, but the decision rests exclusively on their
 product}; no base classifier votes on either factor independently.
-This produces $|\mathcal{Z}| \times |\mathcal{M}|$ base votes. The
+\revmod{A configuration activates the subsets
+$\mathcal{Z}' \subseteq \mathcal{Z}$ and
+$\mathcal{M}' \subseteq \mathcal{M}$ returned by the search procedure of
+Section~\ref{subsec:params}, so that $|\mathcal{Z}'| \times
+|\mathcal{M}'|$ base votes are produced.} The
 final prediction is
 
 \begin{equation}
   \hat{y}_q
   = \underset{c\,\in\,\{0,1\}}{\arg\max}\;
-    \sum_{z,d}
+    \sum_{z \in \mathcal{Z}'}\;\sum_{d \in \mathcal{M}'}
     \mathbf{1}\!\left[v^{(z,d)} = c\right],
   \label{eq:majority}
 \end{equation}
 
 \noindent where $\mathbf{1}[\cdot]$ is the indicator function and
-the double sum aggregates \revmod{all $|\mathcal{Z}| \times
-|\mathcal{M}|$ votes}. \revmod{In ties, the smallest class index is
+the double sum aggregates \revmod{the $|\mathcal{Z}'| \times
+|\mathcal{M}'|$ active votes}. \revmod{In ties, the smallest class index is
 selected, consistent with the \texttt{argmax} over the vote-count
 vector.}
 
@@ -263,19 +294,18 @@ vector.}
 
 \subsection{Parameter Search and Experimental Protocol}\label{subsec:params}
 
-\revmod{The exhaustive grid search considers two hyperparameters: the
-compressor set $\mathcal{C}$ and the dissimilarity-metric set
-$\mathcal{M}$; the self-similarity setting is held fixed (see
-Section~\ref{subsec:stage1}). The sets $\mathcal{C}$ and
-$\mathcal{M}$ can be any non-empty subsets of
-$\{\texttt{bz2}, \texttt{zlib}, \texttt{gzip}\}$ and
-$\{\mathrm{NCD}, \mathrm{CDM}, \mathrm{CLM}\}$, respectively.
-Thus, a configuration can use either a single compressor--metric
-combination or multiple combinations. In the latter case, each
-compressor--metric pair contributes one feature to the dissimilarity
-matrix; each feature votes for the class whose support centroid lies
-closest to the query, and the final prediction is determined by majority
-voting. This results in $7 \times 7 = 49$ candidate
+\revmod{The exhaustive grid search optimises two hyperparameters: the
+active compressor subset $\mathcal{Z}' \subseteq \mathcal{Z}$ and the
+active metric subset $\mathcal{M}' \subseteq \mathcal{M}$, both
+constrained to be non-empty; the self-comparison setting is held fixed
+(see Section~\ref{subsec:stage1}). A configuration thus activates
+$|\mathcal{Z}'| \times |\mathcal{M}'|$ compressor--metric channels,
+each of which contributes one base classifier that votes according to
+Eq.~\eqref{eq:vote}, the final prediction being resolved by majority
+voting over the active channels (Eq.~\eqref{eq:majority}). A
+configuration may therefore reduce to a single channel or combine up to
+nine. Since $\mathcal{Z}$ and $\mathcal{M}$ each admit seven non-empty
+subsets, the search enumerates $7 \times 7 = 49$ candidate
 configurations per support-set protocol.}
 
 \revmod{Each configuration is evaluated under two protocols governing the
