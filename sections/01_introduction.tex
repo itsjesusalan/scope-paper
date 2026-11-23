@@ -80,10 +80,11 @@ regularities in SMILES. Second, instead of direct pairwise NCD
 lookup for kNN classification, SCoPE constructs a centroid-based
 geometric representation of each candidate class in the
 dissimilarity matrix space, providing a more stable class signature
-for small support sets. Third, SCoPE incorporates CDM \cite{keogh2007compression}
-\revadd{and CLM}\cite{jiang2022fewshot}
- alongside NCD, capturing complementary aspects of
-informational overlap. Fourth, SCoPE applies \revmod{the product of the
+for small support sets. Third, \revmod{SCoPE exposes a family of three compression-based
+dissimilarity measures---NCD, the CDM \cite{keogh2007compression} and the
+Chen--Li Metric \cite{chen1999compression,li2001information}---to model
+selection, rather than committing \textit{a priori} to NCD as earlier
+compression-based classifiers do}. Fourth, SCoPE applies \revmod{the product of the
 Euclidean and cosine distances} to the centroid--query comparison and
 resolves the final prediction by majority voting \revmod{over the base
 classifiers indexed by compressor--metric pairs}. The complete
